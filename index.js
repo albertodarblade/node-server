@@ -1,9 +1,15 @@
+const express = require('express');
+const app = express();
+
+
+console.log(process.env.OPENSHIFT_NODEJS_IP || process.env.OPENSHIFT_INTERNAL_IP || 'localhost');
+console.log(process.env.OPENSHIFT_NODEJS_PORT ||  process.env.OPENSHIFT_INTERNAL_PORT || process.env.PORT || 3000);
+
 app.configure(function() {
   // Set the IP and port to use the OpenShift variables.
   app.set('port', process.env.OPENSHIFT_NODEJS_PORT ||  process.env.OPENSHIFT_INTERNAL_PORT || process.env.PORT || 3000);
   app.set('ip', process.env.OPENSHIFT_NODEJS_IP || process.env.OPENSHIFT_INTERNAL_IP || 'localhost');
 });
-
 // Set the app.listen to use the port and ip.
 app.listen(app.get('port'), app.get('ip'), function(){
   console.log("Express server listening on " + app.get('ip') + ":" + app.get('port'));

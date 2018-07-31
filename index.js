@@ -25,7 +25,9 @@ const noteBookRoutes = require('./app/routes/note-book.route');
 const notesRoutes = require('./app/routes/notes.route');
 
 app.use('/note-books', noteBookRoutes);
-
+app.use('/', (req, res) => {
+  res.send('nice job is working well heroku thanks');
+});
 /* TODO:Delete app.listen(server_port, server_ip_address, function () {
   console.log( "Listening on " + server_ip_address + ", port " + server_port )
 });

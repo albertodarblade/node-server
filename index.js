@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser')
+const http = require('http');
 //config variables.
 var server_port = 8080;
 var server_ip_address = '0.0.0.0';
@@ -25,6 +26,12 @@ const notesRoutes = require('./app/routes/notes.route');
 
 app.use('/note-books', noteBookRoutes);
 
-app.listen(server_port, server_ip_address, function () {
+/* TODO:Delete app.listen(server_port, server_ip_address, function () {
   console.log( "Listening on " + server_ip_address + ", port " + server_port )
 });
+ */
+const port = process.env.PORT || '3500';
+app.set('port', port);
+const server = http.createServer(app);
+
+server.listen(port, () => console.log(`API running on localhost:${port}`));

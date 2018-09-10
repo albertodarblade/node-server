@@ -22,9 +22,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 //routes
 const noteBookRoutes = require('./app/routes/note-book.route');
+const userRoutes = require('./app/routes/user.route')
 const notesRoutes = require('./app/routes/notes.route');
 
 app.use('/note-books', noteBookRoutes);
+app.use('/users', userRoutes);
+
 app.use('/', (req, res) => {
   res.send('nice job is working well heroku thanks');
 });

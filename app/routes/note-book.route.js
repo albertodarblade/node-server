@@ -71,13 +71,50 @@ router.post('/:id/notes', (req, res) => {
     });
 });
 
+router.patch('/:id/notes/:noteId', (req, res) => {
+    NoteBook.findOne({_id: req.params.id})
+    .then((record) => {
+        const noteId = new mongoose.Types.ObjectId(req.params.noteId);
+        let note = _.find(record.notes, {_id: noteId});
+        if(note) {   
+            note.name = req.body.name;
+            note.cost = req.body.cost;
+            return record.save();   
+        }
+        res.send('nothing to update');
+    })
+    .then(response => {
+        res.send(response);
+    })
+    .catch(error => {
+        res.send(error);
+    });
+});
+
+router.delete('/:id/notes/:noteId', (req, res) => {
+    NoteBook.findOne({_id: req.params.id})
+    .then((record) => {
+        const noteId = new mongoose.Types.ObjectId(req.params.noteId);
+        let index = _.findIndex(record.notes, {_id: noteId});
+        if(index >= 0) {
+            record.notes.splice(index, 1);
+        }
+        return record.save();
+    })
+    .then(response => {
+        res.send(response);
+    })
+    .catch(error => {
+        res.send(error);
+    });
+});
+
 function sendNotifications(users, body, cost) {
     const notification = {
         title: 'Agregaron una nota costo ' + cost,
         body: body,
         icon: '/images/icons/icon-72x72.png'
     }
-    console.log(users, 'will send');
     users.forEach(user => {
         let message = {
             notification: notification,
@@ -94,7 +131,6 @@ function sendNotifications(users, body, cost) {
             }
         }
         request(clientServerOptions, function (error, response) {
-            console.log(error, response.body);
             return;
         });
     });

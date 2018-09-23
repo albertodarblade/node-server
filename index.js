@@ -10,7 +10,7 @@ var server_port = 8080;
 var server_ip_address = '0.0.0.0';
 const connectionString = 'mongodb+srv://albertoblacutt:jasmin@hommybaby-uuylx.mongodb.net/test?retryWrites=true';
 
-mongoose.connect(connectionString, {useNewUrlParser: true, auth:{authdb:"admin"} })
+mongoose.connect(connectionString, {useNewUrlParser : true, auth:{authdb:"admin"} })
 .then(function () {
   console.log('connected to atlas db');
 })
@@ -23,10 +23,11 @@ app.use(bodyParser.json());
 //routes
 const noteBookRoutes = require('./app/routes/note-book.route');
 const userRoutes = require('./app/routes/user.route')
-const notesRoutes = require('./app/routes/notes.route');
+const archiveRoutes = require('./app/routes/archive.route');
 
 app.use('/note-books', noteBookRoutes);
 app.use('/users', userRoutes);
+app.use('/archives', archiveRoutes);
 
 app.use('/', (req, res) => {
   res.send('nice job is working well heroku thanks');

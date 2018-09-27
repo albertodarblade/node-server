@@ -114,6 +114,7 @@ router.delete('/:id/notes/:noteId', (req, res) => {
 });
 
 function sendNotifications(users, body, cost) {
+    return;
     const notification = {
         title: 'Agregaron una nota costo ' + cost,
         body: body,

@@ -45,7 +45,10 @@ router.post('/', (req, res, next) => {
 });
 
 router.post('/:id/notes', (req, res) => {
+    console.log(new Date().getTime());
+    console.log(req.body.date);
 
+    console.log('-------------------------------');
     console.log(Math.floor(new Date().getTime()/ 1000));
     console.log(Math.floor(req.body.date / 1000));
     NoteBook.findOne({_id: req.params.id})

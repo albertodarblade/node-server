@@ -45,6 +45,10 @@ router.post('/', (req, res, next) => {
 });
 
 router.post('/:id/notes', (req, res) => {
+
+    console.log(new Date());
+    console.log(new Date(req.body.date));
+
     NoteBook.findOne({_id: req.params.id})
     .then((record) => {
         var note = {

@@ -6,8 +6,8 @@ const NoteBook = require('../models/note-book.model');
 
 const _ = require('lodash');
 
-router.get('/', (req, res, next) => {
-    const noteBookId = new mongoose.Types.ObjectId(req.query.id)
+router.get('/:id', (req, res, next) => {
+    const noteBookId = new mongoose.Types.ObjectId(req.params.id)
     Archive.find({noteBookId: noteBookId})
     .then(response => {
         res.status(200).json(response);

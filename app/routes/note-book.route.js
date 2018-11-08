@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
     NoteBook.find()
     .then((response) => {
         var noteBooks = _.map(response, item => {
-            return {_id: item._id, name: item.name};
+            return {_id: item._id, name: item.name, members: item.members, type: item.type};
         });
         res.status(200).json(noteBooks);
     })
@@ -34,7 +34,9 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
     const noteBook = new NoteBook({
         _id: new mongoose.Types.ObjectId(),
-        name: req.body.name
+        name: req.body.name,
+        type: req.body.type,
+        members: [req.body.userId]
     });
     noteBook.save().then(result => {
         res.send(result);  
@@ -72,19 +74,20 @@ router.post('/:id/notes', (req, res) => {
 });
 
 router.patch('/:id/notes/:noteId', (req, res) => {
+    const objectToUpdate = Object.assign({}, req.body);
+    objectToUpdate._id = req.params.noteId;
     NoteBook.findOne({_id: req.params.id})
     .then((record) => {
-        const noteId = new mongoose.Types.ObjectId(req.params.noteId);
+        const noteId = new mongoose.Types.ObjectId(objectToUpdate._id);
         let note = _.find(record.notes, {_id: noteId});
-        if(note) {   
-            note.name = req.body.name;
-            note.cost = req.body.cost;
-            return record.save();   
+        if(note) {
+            note = Object.assign(note, req.body);
+            return record.save();
         }
         res.send('nothing to update');
     })
     .then(response => {
-        res.send(response);
+        res.send(objectToUpdate);
     })
     .catch(error => {
         res.send(error);
@@ -102,7 +105,7 @@ router.delete('/:id/notes/:noteId', (req, res) => {
         return record.save();
     })
     .then(response => {
-        res.send(response);
+        res.send({_id: req.params.id});
     })
     .catch(error => {
         res.send(error);
@@ -110,6 +113,7 @@ router.delete('/:id/notes/:noteId', (req, res) => {
 });
 
 function sendNotifications(users, body, cost) {
+    return;
     const notification = {
         title: 'Agregaron una nota costo ' + cost,
         body: body,

@@ -10,7 +10,9 @@ const notesSchema = mongoose.Schema({
 const noteBookSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: String,
-    notes: [notesSchema]
+    notes: [notesSchema],
+    type: String,
+    members: [String]
 });
 
 module.exports = mongoose.model('NoteBook', noteBookSchema);
